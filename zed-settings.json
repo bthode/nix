@@ -1,0 +1,525 @@
+{
+  "profiles": {
+    "Work": {
+      "settings": {
+        "edit_predictions": {
+          "provider": "copilot"
+        },
+        "agent": {
+          "inline_assistant_model": {
+            "provider": "copilot_chat",
+            "model": "gpt-4.1"
+          },
+          "default_model": {
+            "provider": "copilot_chat",
+            "model": "gpt-4.1"
+          }
+        }
+      }
+    },
+    "Personal": {
+      "settings": {
+        "edit_predictions": {
+          "provider": "copilot"
+        },
+        "agent": {
+          "inline_assistant_model": {
+            "provider": "copilot_chat",
+            "model": "claude-3.7-sonnet"
+          },
+          "default_model": {
+            "provider": "copilot_chat",
+            "model": "claude-3.7-sonnet"
+          }
+        }
+      }
+    }
+  },
+  "project_panel": { "entry_spacing": "comfortable",
+                     "dock": "left",
+                     "drag_and_drop": false },
+  "show_edit_predictions": true,
+  // Separate model settings for each feature
+  // https://github.com/zed-industries/zed/pull/28088/files#diff-d0c4f18c8286aecbc83a7abeb52e3bb478e1664bf613c59ecd0ad39e3e9f4868
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": false,
+    "selections_menu": false
+  },
+  "hide_mouse": "on_typing_and_action",
+  "minimap": { "display_in": "active_editor" },
+  "close_on_file_delete": true,
+  "icon_theme": "Material Icon Theme",
+  "theme": "One Dark Pro",
+  "use_system_prompts": true,
+  "agent": {
+    "sidebar_side": "right",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1"
+    },
+    "model_parameters": []
+  },
+  "auto_install_extensions": {
+    "elisp": true,
+    "graphql": true,
+    "log": true,
+    "make": true,
+    "material-icon-theme": true,
+    "one-dark-pro": true,
+    "nix": true,
+    "ruff": true,
+    "snippets": true,
+    "sql": true,
+    "toml": true
+  },
+  "terminal": {
+    "env": {
+      "TERM": "xterm-256color"
+    }
+  },
+  "indent_guides": { "enabled": true, "coloring": "indent_aware" },
+  "vim": {
+    "toggle_relative_line_numbers": true,
+    "use_system_clipboard": "always"
+  },
+  "load_direnv": "shell_hook",
+  "ui_font_size": 14,
+  "buffer_font_size": 16.0,
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "pane_split_direction_vertical": "right",
+  "format_on_save": "on",
+  "autosave": "on_window_change",
+  "max_tabs": 10,
+  // "show_signature_help_after_completion": true, // Press cmd + i (MacOS)
+  // "auto_signature_help": true,
+  "context_servers": {
+    "Playwright MCP": {
+      "enabled": true,
+      "command": "/Users/bthode/.nvm/versions/node/v22.17.0/bin/playwright-mcp",
+      "args": ["@playwright/mcp@latest"],
+      "env": {}
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "inlayHints": {
+          "maxLength": null,
+          "lifetimeElisionHints": {
+            "enable": "skip_trivial",
+            "useParameterNames": true
+          },
+          "closureReturnTypeHints": {
+            "enable": "always"
+          }
+        },
+        "check": {
+          "command": "clippy" // rust-analyzer.check.command (default: "check")
+        }
+      }
+    },
+    "gopls": {
+      // https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+      "initialization_options": {
+        "directoryFilters": ["-**/node_modules", "-**/.git"],
+        "formatting.gofumpt": true,
+        "symbolScope": "workspace",
+        "staticcheck": true,
+        "templateExtensions": ["tmpl"],
+        "experimentalPostfixCompletions": true,
+        "analyses": {
+          "nilness": true,
+          "unusedparams": true,
+          "unusedvariable": true,
+          "unusedwrite": true,
+          "useany": true
+        },
+        "codelenses": {
+          "gc_details": true
+        }
+      }
+    },
+    "pyright": {
+      "settings": {
+        "python.analysis": {
+          "ignore": ["*"],
+          "diagnosticMode": "workspace",
+          "typeCheckingMode": "strict"
+        }
+      }
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          "lineLength": 120,
+          "fixAll": true,
+          "lint": {
+            "extendSelect": ["E", "F", "UP", "B", "SIM", "I"]
+          }
+        }
+      }
+    },
+    "basedpyright": {
+      "settings": {
+        // https://docs.basedpyright.com/latest/configuration/language-server-settings/
+        "basedpyright.analysis": {
+          "autoImportCompletions": true,
+          "diagnosticMode": "workspace",
+          "inlayHints": {
+            "callArgumentNames": true,
+            "show_value_hints": false
+          }
+        }
+      }
+    },
+    "protobuf-language-server": {
+      "binary": {
+        "path": "buf",
+        "arguments": ["beta", "lsp"]
+      }
+    }
+  },
+  "vim_mode": true,
+
+  "restore_on_startup": "empty_tab",
+  "base_keymap": "JetBrains",
+  "when_closing_with_no_tabs": "close_window",
+  "scroll_beyond_last_line": "off",
+  "on_last_window_closed": "quit_app",
+  "relative_line_numbers": "enabled",
+  "ensure_final_newline_on_save": true,
+  "languages": {
+    "Shell Script": {
+      "show_edit_predictions": false
+    },
+    "Go": {
+      "format_on_save": "on",
+      "code_actions_on_format": {
+        "source.organizeImports": true
+      }
+    },
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    },
+    "TSX": {
+      "code_actions_on_format": {
+        "source.organizeImports": true
+      }
+    },
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "SQL": {
+      "formatter": {
+        "external": {
+          "command": "sqlfluff",
+          "arguments": [
+            "fix",
+            "--force",
+            "-q",
+            "--dialect",
+            "postgres",
+            "-"
+          ]
+        }
+      },
+      "format_on_save": "on"
+    },
+    "Python": {
+      "code_actions_on_format": {
+        "source.fixAll.ruff": true,
+        "source.organizeImports.ruff": true
+      },
+      "preferred_line_length": 120,
+      "language_servers": ["basedpyright", "ruff"],
+      "enable_language_server": true,
+      "format_on_save": "on",
+      "formatter": []
+    }
+  }
+}
+
+{
+  "profiles": {
+    "Work": {
+      "features": {
+        "edit_prediction_provider": "zed"
+      },
+      "agent": {
+        "inline_assistant_model": {
+          "provider": "copilot_chat",
+          "model": "gpt-4.1"
+        },
+        "default_model": {
+          "provider": "copilot_chat",
+          "model": "gpt-4.1"
+        }
+      }
+    },
+    "Personal": {
+      "features": {
+        "edit_prediction_provider": "copilot"
+      },
+      "agent": {
+        "inline_assistant_model": {
+          "provider": "copilot_chat",
+          "model": "claude-3.7-sonnet"
+        },
+        "default_model": {
+          "provider": "copilot_chat",
+          "model": "claude-3.7-sonnet"
+        }
+      }
+    }
+  },
+  "project_panel": { "drag_and_drop": false },
+  "show_edit_predictions": true,
+  "edit_predictions": {
+    "provider": "copilot"
+  },
+  // Separate model settings for each feature
+  // https://github.com/zed-industries/zed/pull/28088/files#diff-d0c4f18c8286aecbc83a7abeb52e3bb478e1664bf613c59ecd0ad39e3e9f4868
+  "toolbar": {
+    "breadcrumbs": true,
+    "quick_actions": false,
+    "selections_menu": false
+  },
+  "hide_mouse": "on_typing_and_action",
+  "minimap": { "display_in": "active_editor" },
+  "close_on_file_delete": true,
+  "features": {
+    "edit_prediction_provider": "copilot" // zed / copilot
+  },
+  "icon_theme": "Material Icon Theme",
+  "theme": "One Dark Pro",
+  "use_system_prompts": true,
+  "agent": {
+    "inline_assistant_model": {
+      "provider": "copilot_chat",
+      "model": "claude-3.7-sonnet"
+    },
+    "profiles": {
+      "ask": {
+        "name": "Ask",
+        "tools": {
+          "contents": true,
+          "diagnostics": true,
+          "fetch": true,
+          "list_directory": true,
+          "project_notifications": true,
+          "now": true,
+          "find_path": true,
+          "read_file": true,
+          "open": true,
+          "grep": true,
+          "thinking": true,
+          "web_search": true
+        },
+        "enable_all_context_servers": false,
+        "context_servers": {
+          "Playwright MCP": {
+            "tools": {
+              "init-browser": true,
+              "get-screenshot": true,
+              "get-full-dom": true,
+              "get-context": true,
+              "execute-code": true
+            }
+          }
+        }
+      }
+    },
+    "always_allow_tool_actions": true,
+    "default_profile": "write",
+    "default_model": {
+      "provider": "copilot_chat",
+      "model": "gpt-4.1"
+    }
+  },
+  "auto_install_extensions": {
+    "elisp": true,
+    "graphql": true,
+    "log": true,
+    "make": true,
+    "material-icon-theme": true,
+    "one-dark-pro": true,
+    "nix": true,
+    "ruff": true,
+    "snippets": true,
+    "sql": true,
+    "toml": true
+  },
+  "terminal": {
+    "env": {
+      "TERM": "xterm-256color"
+    }
+  },
+  "indent_guides": { "enabled": true, "coloring": "indent_aware" },
+  "vim": {
+    "toggle_relative_line_numbers": true,
+    "use_system_clipboard": "always"
+  },
+  "load_direnv": "shell_hook",
+  "ui_font_size": 14,
+  "buffer_font_size": 16.0,
+  "buffer_font_family": "JetBrainsMono Nerd Font",
+  "pane_split_direction_vertical": "right",
+  "format_on_save": "on",
+  "autosave": "on_window_change",
+  "max_tabs": 10,
+  // "show_signature_help_after_completion": true, // Press cmd + i (MacOS)
+  // "auto_signature_help": true,
+  "context_servers": {
+    "Playwright MCP": {
+      "source": "custom",
+      "enabled": true,
+      "command": "/Users/bthode/.nvm/versions/node/v22.17.0/bin/playwright-mcp",
+      "args": ["@playwright/mcp@latest"],
+      "env": {}
+    }
+  },
+  "lsp": {
+    "rust-analyzer": {
+      "initialization_options": {
+        "inlayHints": {
+          "maxLength": null,
+          "lifetimeElisionHints": {
+            "enable": "skip_trivial",
+            "useParameterNames": true
+          },
+          "closureReturnTypeHints": {
+            "enable": "always"
+          }
+        },
+        "check": {
+          "command": "clippy" // rust-analyzer.check.command (default: "check")
+        }
+      }
+    },
+    "gopls": {
+      // https://github.com/golang/tools/blob/master/gopls/doc/settings.md
+      "initialization_options": {
+        "directoryFilters": ["-**/node_modules", "-**/.git"],
+        "formatting.gofumpt": true,
+        "symbolScope": "workspace",
+        "staticcheck": true,
+        "templateExtensions": ["tmpl"],
+        "experimentalPostfixCompletions": true,
+        "analyses": {
+          "nilness": true,
+          "unusedparams": true,
+          "unusedvariable": true,
+          "unusedwrite": true,
+          "useany": true
+        },
+        "codelenses": {
+          "gc_details": true
+        }
+      }
+    },
+    "pyright": {
+      "settings": {
+        "python.analysis": {
+          "ignore": ["*"],
+          "diagnosticMode": "workspace",
+          "typeCheckingMode": "strict"
+        }
+      }
+    },
+    "ruff": {
+      "initialization_options": {
+        "settings": {
+          "lineLength": 120,
+          "fixAll": true,
+          "lint": {
+            "extendSelect": ["E", "F", "UP", "B", "SIM", "I"]
+          }
+        }
+      }
+    },
+    "basedpyright": {
+      "settings": {
+        // https://docs.basedpyright.com/latest/configuration/language-server-settings/
+        "basedpyright.analysis": {
+          "autoImportCompletions": true,
+          "diagnosticMode": "workspace",
+          "inlayHints": {
+            "callArgumentNames": true,
+            "show_value_hints": false
+          }
+        }
+      }
+    },
+    "protobuf-language-server": {
+      "binary": {
+        "path": "buf",
+        "arguments": ["beta", "lsp"]
+      }
+    }
+  },
+  "vim_mode": true,
+
+  "restore_on_startup": "none",
+  "base_keymap": "JetBrains",
+  "when_closing_with_no_tabs": "close_window",
+  "scroll_beyond_last_line": "off",
+  "on_last_window_closed": "quit_app",
+  "relative_line_numbers": true,
+  "ensure_final_newline_on_save": true,
+  "languages": {
+    "Shell Script": {
+      "show_edit_predictions": false
+    },
+    "Go": {
+      "format_on_save": "on",
+      "code_actions_on_format": {
+        "source.organizeImports": true
+      }
+    },
+    "TypeScript": {
+      "code_actions_on_format": {
+        "source.organizeImports": true,
+        "source.fixAll.eslint": true
+      }
+    },
+    "TSX": {
+      "code_actions_on_format": {
+        "source.organizeImports": true
+      }
+    },
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "SQL": {
+      "format_on_save": {
+        "external": {
+          "command": "sqlfluff",
+          "arguments": ["fix", "--force", "-q", "--dialect", "postgres", "-"]
+        }
+      }
+    },
+    "Python": {
+      "preferred_line_length": 120,
+      "language_servers": ["basedpyright", "ruff"],
+      "enable_language_server": true,
+      "format_on_save": "on",
+      "formatter": [
+        {
+          "code_actions": {
+            "source.organizeImports.ruff": true,
+            "source.fixAll.ruff": true
+          }
+        }
+      ]
+    }
+  }
+}
+
