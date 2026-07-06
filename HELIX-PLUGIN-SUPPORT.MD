@@ -36,6 +36,27 @@ Using `cargoHash = ""` to trigger a hash-mismatch error failed because `fetchCar
 
 `init.scm` is evaluated before the load path override takes effect for `require`. Placing the plugin files in `~/.config/helix/lib/` and calling `(add-to-load-path! ...)` first did not work. Steel resolves `require` paths from its hardcoded default: `~/.local/share/steel/cogs/`. Moving the symlinks there fixed it.
 
+### Tree-sitter grammars: `.so` vs `.dylib` on macOS
+
+The `helix-steel` binary expects grammar files with a `.dylib` extension on macOS (hardcoded in `helix-loader/src/grammar.rs`), but the `nixpkgs` `helix` wrapper builds all grammars as `.so` files — even on Darwin. This causes `Tree-sitter parser: None` for every language and no syntax highlighting regardless of theme. The issue is tracked upstream as helix PR [#14982](https://github.com/helix-editor/helix/pull/14982).
+
+**Symptom:** `hx --health <lang>` shows `Tree-sitter parser: None` alongside `Highlight queries: ✓`.
+
+**Fix:** `helix.nix` creates a `grammarsDylib` derivation that builds a directory of `.dylib` symlinks pointing at the existing `.so` files, then mounts it at `~/.config/helix/runtime/grammars` — the first path in Helix's runtime search order:
+
+```nix
+helixRuntime = pkgs.helix.runtime;
+grammarsDylib = pkgs.runCommand "helix-grammars-dylib" { } ''
+  mkdir -p $out
+  for f in ${helixRuntime}/grammars/*.so; do
+    name=$(basename "$f" .so)
+    ln -s "$f" "$out/$name.dylib"
+  done
+'';
+# in home.file:
+".config/helix/runtime/grammars".source = grammarsDylib;
+```
+
 ## Relevant files
 
 | File | What changed |

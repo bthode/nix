@@ -5,6 +5,18 @@ let
     rm -rf $out/grammars $out/queries
   '';
 
+  # nixpkgs builds grammars as .so but the helix-steel binary on macOS expects .dylib.
+  # Create a grammars directory with .dylib symlinks pointing at the existing .so files.
+  # See: https://github.com/helix-editor/helix/pull/14982
+  helixRuntime = pkgs.helix.runtime;
+  grammarsDylib = pkgs.runCommand "helix-grammars-dylib" { } ''
+    mkdir -p $out
+    for f in ${helixRuntime}/grammars/*.so; do
+      name=$(basename "$f" .so)
+      ln -s "$f" "$out/$name.dylib"
+    done
+  '';
+
   helix-steel-unwrapped = pkgs.rustPlatform.buildRustPackage {
     pname = "helix-steel-unwrapped";
     version = "steel-event-system";
@@ -67,6 +79,8 @@ in
       (require "vim-hx/init.scm")
       (set-vim-keybindings!)
     '';
+
+    ".config/helix/runtime/grammars".source = grammarsDylib;
   };
 
   programs.helix = {
