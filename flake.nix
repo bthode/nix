@@ -109,7 +109,7 @@
 
                 age.secrets = lib.optionalAttrs isWork {
                   npmrc = {
-                    file = "/Users/${username}/.nix-secrets/npmrc-smithrx.age";
+                    file = "${inputs.nix-secrets}/npmrc-smithrx.age";
                     path = "/Users/${username}/.npmrc";
                     owner = username;
                     group = "staff";
@@ -117,7 +117,7 @@
                   };
 
                   forge-envrc = {
-                    file = "/Users/${username}/.nix-secrets/forge-envrc.age";
+                    file = "${inputs.nix-secrets}/forge-envrc.age";
                     path = "/Users/${username}/Code/forge/.envrc";
                     owner = username;
                     group = "staff";
@@ -125,7 +125,7 @@
                   };
 
                   github-pat = {
-                    file = "/Users/${username}/.nix-secrets/github-pat.age";
+                    file = "${inputs.nix-secrets}/github-pat.age";
                     path = "/Users/${username}/.github-pat";
                     owner = username;
                     group = "staff";
@@ -133,7 +133,7 @@
                   };
 
                   automation-envrc = {
-                    file = "/Users/${username}/.nix-secrets/automation-envrc.age";
+                    file = "${inputs.nix-secrets}/automation-envrc.age";
                     path = "/Users/${username}/Code/automation/.envrc";
                     owner = username;
                     group = "staff";
