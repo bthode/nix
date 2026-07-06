@@ -107,39 +107,57 @@
 
                 age.identityPaths = [ "/etc/agenix/keys/agenix_key" ];
 
-                age.secrets = lib.optionalAttrs isWork {
-                  npmrc = {
-                    file = "${inputs.nix-secrets}/npmrc-smithrx.age";
-                    path = "/Users/${username}/.npmrc";
-                    owner = username;
-                    group = "staff";
-                    mode = "0600";
-                  };
+                age.secrets =
+                  lib.optionalAttrs isWork {
+                    npmrc = {
+                      file = "${inputs.nix-secrets}/npmrc-smithrx.age";
+                      path = "/Users/${username}/.npmrc";
+                      owner = username;
+                      group = "staff";
+                      mode = "0600";
+                    };
 
-                  forge-envrc = {
-                    file = "${inputs.nix-secrets}/forge-envrc.age";
-                    path = "/Users/${username}/Code/forge/.envrc";
-                    owner = username;
-                    group = "staff";
-                    mode = "0600";
-                  };
+                    forge-envrc = {
+                      file = "${inputs.nix-secrets}/forge-envrc.age";
+                      path = "/Users/${username}/Code/forge/.envrc";
+                      owner = username;
+                      group = "staff";
+                      mode = "0600";
+                    };
 
-                  github-pat = {
-                    file = "${inputs.nix-secrets}/github-pat.age";
-                    path = "/Users/${username}/.github-pat";
-                    owner = username;
-                    group = "staff";
-                    mode = "0600";
-                  };
+                    github-pat = {
+                      file = "${inputs.nix-secrets}/github-pat.age";
+                      path = "/Users/${username}/.github-pat";
+                      owner = username;
+                      group = "staff";
+                      mode = "0600";
+                    };
 
-                  automation-envrc = {
-                    file = "${inputs.nix-secrets}/automation-envrc.age";
-                    path = "/Users/${username}/Code/automation/.envrc";
-                    owner = username;
-                    group = "staff";
-                    mode = "0600";
+                    automation-envrc = {
+                      file = "${inputs.nix-secrets}/automation-envrc.age";
+                      path = "/Users/${username}/Code/automation/.envrc";
+                      owner = username;
+                      group = "staff";
+                      mode = "0600";
+                    };
+
+                    ssh-key = {
+                      file = "${inputs.nix-secrets}/work-ssh-key.age";
+                      path = "/Users/${username}/.ssh/id_rsa";
+                      owner = username;
+                      group = "staff";
+                      mode = "0600";
+                    };
+                  }
+                  // lib.optionalAttrs (!isWork) {
+                    ssh-key = {
+                      file = "${inputs.nix-secrets}/personal-ssh-key.age";
+                      path = "/Users/${username}/.ssh/id_rsa";
+                      owner = username;
+                      group = "staff";
+                      mode = "0600";
+                    };
                   };
-                };
 
                 nix.package = pkgs.nix;
 
@@ -497,14 +515,6 @@
                     enable = true;
                     enableDefaultConfig = false;
                     # agentTimeout = "12h"; # TODO: Figure out and fix
-                    settings = {
-                      gh-deploykey = {
-                        HostName = "github.com";
-                        IdentityFile = "~/.ssh/deploy_key";
-                        User = "git";
-                        AddKeysToAgent = "yes";
-                      };
-                    };
                   };
 
                   programs.gh = {
@@ -552,7 +562,8 @@
                   programs.zsh = {
                     enable = true;
                     shellAliases = {
-                      "nix-switch" = "sudo nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake ~/nix";
+                      "nix-switch" =
+                        "sudo nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake ~/nix";
                       "nix-apply" =
                         if isWork then
                           "/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u && source ~/.zshrc"
