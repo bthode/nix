@@ -2,18 +2,16 @@
   "project_panel": {
     "entry_spacing": "comfortable",
     "dock": "left",
-    "drag_and_drop": false
+    "drag_and_drop": false,
   },
   "show_edit_predictions": true,
   "edit_predictions": {
-    "provider": "copilot"
+    "provider": "copilot",
   },
-  // Separate model settings for each feature
-  // https://github.com/zed-industries/zed/pull/28088/files#diff-d0c4f18c8286aecbc83a7abeb52e3bb478e1664bf613c59ecd0ad39e3e9f4868
   "toolbar": {
     "breadcrumbs": true,
     "quick_actions": false,
-    "selections_menu": false
+    "selections_menu": false,
   },
   "hide_mouse": "on_typing_and_action",
   "minimap": { "display_in": "active_editor" },
@@ -24,12 +22,13 @@
   "agent": {
     "inline_assistant_model": {
       "provider": "copilot_chat",
-      "model": "claude-4.6-sonnet"
+      "model": "claude-4.6-sonnet",
     },
     "profiles": {
       "ask": {
         "name": "Ask",
         "tools": {
+          "search_web": true,
           "contents": true,
           "diagnostics": true,
           "fetch": true,
@@ -41,16 +40,15 @@
           "open": true,
           "grep": true,
           "thinking": true,
-          "web_search": true
         },
-        "enable_all_context_servers": false
-      }
+        "enable_all_context_servers": false,
+      },
     },
     "default_profile": "write",
     "default_model": {
       "provider": "copilot_chat",
-      "model": "claude-4.6-sonnet"
-    }
+      "model": "claude-4.6-sonnet",
+    },
   },
   "auto_install_extensions": {
     "elisp": true,
@@ -63,19 +61,19 @@
     "ruff": true,
     "snippets": true,
     "sql": true,
-    "toml": true
+    "toml": true,
   },
   "terminal": {
     "env": {
-      "TERM": "xterm-256color"
-    }
+      "TERM": "xterm-256color",
+    },
   },
   "indent_guides": { "enabled": true, "coloring": "indent_aware" },
   "inlay_hints": { "enabled": true },
   "tabs": { "git_status": true },
   "vim": {
     "toggle_relative_line_numbers": true,
-    "use_system_clipboard": "always"
+    "use_system_clipboard": "always",
   },
   "load_direnv": "shell_hook",
   "ui_font_size": 14,
@@ -85,8 +83,6 @@
   "format_on_save": "on",
   "autosave": "on_window_change",
   "max_tabs": 10,
-  // "show_signature_help_after_completion": true, // Press cmd + i (MacOS)
-  // "auto_signature_help": true,
   "lsp": {
     "rust-analyzer": {
       "initialization_options": {
@@ -94,19 +90,18 @@
           "maxLength": null,
           "lifetimeElisionHints": {
             "enable": "skip_trivial",
-            "useParameterNames": true
+            "useParameterNames": true,
           },
           "closureReturnTypeHints": {
-            "enable": "always"
-          }
+            "enable": "always",
+          },
         },
         "check": {
-          "command": "clippy" // rust-analyzer.check.command (default: "check")
-        }
-      }
+          "command": "clippy",
+        },
+      },
     },
     "gopls": {
-      // https://github.com/golang/tools/blob/master/gopls/doc/settings.md
       "initialization_options": {
         "directoryFilters": ["-**/node_modules", "-**/.git"],
         "formatting.gofumpt": true,
@@ -119,21 +114,21 @@
           "unusedparams": true,
           "unusedvariable": true,
           "unusedwrite": true,
-          "useany": true
+          "useany": true,
         },
         "codelenses": {
-          "gc_details": true
-        }
-      }
+          "gc_details": true,
+        },
+      },
     },
     "pyright": {
       "settings": {
         "python.analysis": {
           "ignore": ["*"],
           "diagnosticMode": "workspace",
-          "typeCheckingMode": "strict"
-        }
-      }
+          "typeCheckingMode": "strict",
+        },
+      },
     },
     "ruff": {
       "initialization_options": {
@@ -141,30 +136,29 @@
           "lineLength": 120,
           "fixAll": true,
           "lint": {
-            "extendSelect": ["E", "F", "UP", "B", "SIM", "I"]
-          }
-        }
-      }
+            "extendSelect": ["E", "F", "UP", "B", "SIM", "I"],
+          },
+        },
+      },
     },
     "basedpyright": {
       "settings": {
-        // https://docs.basedpyright.com/latest/configuration/language-server-settings/
         "basedpyright.analysis": {
           "autoImportCompletions": true,
           "diagnosticMode": "workspace",
           "inlayHints": {
             "callArgumentNames": true,
-            "show_value_hints": false
-          }
-        }
-      }
+            "show_value_hints": false,
+          },
+        },
+      },
     },
     "protobuf-language-server": {
       "binary": {
         "path": "buf",
-        "arguments": ["beta", "lsp"]
-      }
-    }
+        "arguments": ["beta", "lsp"],
+      },
+    },
   },
   "vim_mode": true,
 
@@ -177,39 +171,40 @@
   "ensure_final_newline_on_save": true,
   "languages": {
     "Shell Script": {
-      "show_edit_predictions": false
+      "show_edit_predictions": false,
     },
     "Go": {
       "format_on_save": "on",
       "code_actions_on_format": {
-        "source.organizeImports": true
-      }
+        "source.organizeImports": true,
+      },
     },
     "TypeScript": {
       "code_actions_on_format": {
         "source.organizeImports": true,
-        "source.fixAll.eslint": true
-      }
+        "source.fixAll.eslint": true,
+      },
     },
     "TSX": {
       "code_actions_on_format": {
-        "source.organizeImports": true
-      }
+        "source.organizeImports": true,
+      },
     },
     "JavaScript": {
       "code_actions_on_format": {
-        "source.fixAll.eslint": true
-      }
+        "source.fixAll.eslint": true,
+      },
     },
     "Python": {
+      "code_actions_on_format": {
+        "source.fixAll.ruff": true,
+        "source.organizeImports.ruff": true,
+      },
       "preferred_line_length": 120,
       "language_servers": ["basedpyright", "ruff"],
       "enable_language_server": true,
       "format_on_save": "on",
-      "formatter": [
-        { "code_action": "source.organizeImports.ruff" },
-        { "code_action": "source.fixAll.ruff" }
-      ]
-    }
-  }
+      "formatter": [],
+    },
+  },
 }
