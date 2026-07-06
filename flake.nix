@@ -470,6 +470,7 @@
                     ./git.nix
                     ./helix.nix
                     ./spacemacs.nix
+                    ./herdr.nix
                   ];
                   # Set the state version for home-manager for backwards compatibility.
                   home.stateVersion = "24.05";
