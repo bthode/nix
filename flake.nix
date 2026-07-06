@@ -552,11 +552,7 @@
                   programs.zsh = {
                     enable = true;
                     shellAliases = {
-                      "nix-switch" =
-                        if isWork then
-                          "sudo sh -c 'darwin-rebuild switch --flake ~/singlenix/'"
-                        else
-                          "sudo nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake /Users/bthode/Code/nix-darwin";
+                      "nix-switch" = "sudo nix run nix-darwin --extra-experimental-features \"nix-command flakes\" -- switch --flake ~/nix";
                       "nix-apply" =
                         if isWork then
                           "/System/Library/PrivateFrameworks/SystemAdministration.framework/Resources/activateSettings -u && source ~/.zshrc"
