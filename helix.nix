@@ -88,6 +88,7 @@ in
     package = helix-steel-pkg;
 
     extraPackages = with pkgs; [
+      fs-watcher-lsp
       gopls
       basedpyright
       ruff
@@ -120,12 +121,16 @@ in
         {
           name = "go";
           auto-format = true;
-          language-servers = [ "gopls" ];
+          language-servers = [ "gopls" "fs-watcher-lsp" ];
+        }
+        {
+          name = "nix";
+          language-servers = [ "nixd" "fs-watcher-lsp" ];
         }
         {
           name = "python";
           auto-format = true;
-          language-servers = [ "basedpyright" "ruff" ];
+          language-servers = [ "basedpyright" "ruff" "fs-watcher-lsp" ];
           formatter = {
             command = "ruff";
             args = [ "format" "--stdin-filename" "file.py" "-" ];
@@ -134,6 +139,9 @@ in
       ];
 
       language-server = {
+        fs-watcher-lsp = {
+          command = "fs_watcher_lsp";
+        };
         basedpyright = {
           command = "basedpyright-langserver";
           args = [ "--stdio" ];
