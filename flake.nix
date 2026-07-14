@@ -226,7 +226,6 @@
                       jdk25
                       jmeter
                       rancher
-                      rectangle
                       redis
                       teleport
                     ]
@@ -273,6 +272,9 @@
                     # https://github.com/pqrs-org/Karabiner-Elements/issues/3941#issuecomment-3223503610
                     # "karabiner-elements"
                     "zed"
+                  ]
+                  ++ lib.optionals isWork [
+                    "rectangle"
                   ]
                   ++ lib.optionals (!isWork) [
                     "github"
