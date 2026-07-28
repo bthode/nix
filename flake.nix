@@ -281,6 +281,7 @@
                     "multipass"
                     "steam"
                     "telegram"
+                    "ticktick"
                   ];
 
                   masApps = lib.optionalAttrs (!isWork) {
