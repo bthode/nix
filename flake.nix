@@ -196,7 +196,7 @@
                     neovim
                     nil
                     nixd
-                    nodejs_22
+                    nodejs_24
                     openssl
                     posting # Modern API client that lives in your terminal.
                     pre-commit
@@ -584,6 +584,10 @@
 
                       g.rp() {
                         git ls-files --full-name "$1" | pbcopy
+                      }
+
+                      g.cd() {
+                        cd "$(git rev-parse --show-toplevel)"
                       }
                     ''
                     + lib.optionalString isWork ''
