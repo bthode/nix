@@ -19,7 +19,7 @@
 - Colima template path is `~/.colima/_templates/default.yaml` (verified via `colima template --print`).
 - The template file must be **complete**, not partial. Colima unmarshals it into the same struct that supplies flag defaults, so an omitted field becomes a Go zero value (`cpu: 0`), not a default.
 - Work on branch `colima-migration`. The repo has no formatter config; match the existing 2-space style in `flake.nix` by hand.
-- **Ordering dependency:** Task 4 (purge) is a prerequisite for Task 3's credential helpers to function, because `/usr/local/bin` (PATH position 2) shadows `/run/current-system/sw/bin` (position 17).
+- **No ordering dependency between Task 4 and Task 3.** An earlier draft claimed the purge was a prerequisite because `/usr/local/bin` (PATH position 2) shadows `/run/current-system/sw/bin` (position 17). Verified false: PATH lookup requires an *executable* file, and a dangling symlink fails that test, so lookup skips it. `kubectl` and the credential helpers are fixed by Task 1's package declarations alone. Task 4 remains worth doing for the 21 GB and the dead root launch daemons.
 - Nix evaluation of this flake takes ~40s uncached for `systemPackages` queries. That is expected, not a hang.
 
 ---
@@ -33,7 +33,7 @@ Adds the Colima engine plus the three tools that broke when Docker Desktop was r
 
 **Interfaces:**
 - Consumes: nothing.
-- Produces: `colima`, `kubectl`, `docker-credential-osxkeychain`, and `docker-credential-ecr-login` binaries in `/run/current-system/sw/bin` on the work host. Task 3's `credHelpers` config depends on the last two existing by those exact binary names.
+- Produces: `colima`, `kubectl`, `docker-credential-osxkeychain`, and `docker-credential-ecr-login` binaries in `/run/current-system/sw/bin` on the work host. Task 3's `credHelpers` config depends on the last two existing by those exact binary names. This task alone is what repairs `kubectl` — the purge in Task 4 is not required for it.
 
 - [ ] **Step 1: Write the failing check**
 
@@ -586,9 +586,7 @@ df -h /
 
 Expected: available space up by roughly 21 GB from the pre-purge figure.
 
-- [ ] **Step 4: Verify the PATH shadowing is gone**
-
-This is the check that proves the purge mattered:
+- [ ] **Step 4: Verify the restored tooling resolves to Nix**
 
 ```bash
 command -v kubectl
@@ -597,7 +595,7 @@ command -v docker-credential-ecr-login
 command -v docker-credential-osxkeychain
 ```
 
-Expected: `kubectl` resolves under `/run/current-system/sw/bin` or `~/.nix-profile/bin`, **not** `/usr/local/bin`; `kubectl version --client` prints a version; both credential helpers resolve into Nix paths.
+Expected: all three resolve under `/run/current-system/sw/bin` or `~/.nix-profile/bin`, and `kubectl version --client` prints a version. Note this is expected to pass whether or not Step 3's purge ran — dangling symlinks do not shadow, so Task 1 is what fixed these. The check confirms the package declarations took effect, not that the purge mattered.
 
 - [ ] **Step 5: Start the VM**
 

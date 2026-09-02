@@ -39,7 +39,7 @@ Leftovers, and why each matters:
 | `~/.docker/cli-plugins/*` | 16 dangling symlinks into `/Applications/Docker.app` | Dead entries shadowing nothing today, but noise |
 | `/usr/local/bin/docker-credential-ecr-login` | dangling | **ECR auth broken** |
 | `/usr/local/bin/kubectl`, `kubectl.docker` | dangling | **`kubectl` broken** |
-| `/usr/local/bin/docker`, `docker-compose`, `docker-credential-desktop`, `docker-credential-osxkeychain` | dangling | Shadow Nix (see PATH note) |
+| `/usr/local/bin/docker`, `docker-compose`, `docker-credential-desktop`, `docker-credential-osxkeychain` | dangling | Misleading clutter; do **not** shadow Nix (see PATH note) |
 | `/Library/LaunchDaemons/com.docker.{socket,vmnetd}.plist` | present, root-owned | Dead daemons still load at boot |
 | `/Library/PrivilegedHelperTools/com.docker.vmnetd` | present, root-owned | Orphaned privileged helper |
 | `~/Library/Containers/com.docker.docker` | 21 GB | Stranded VM disk |
@@ -47,11 +47,25 @@ Leftovers, and why each matters:
 | `~/Library/Application Support/Docker Desktop` | 118 MB | Orphaned |
 | `~/Library/Preferences/com.electron.dockerdesktop.plist` | present | Orphaned |
 
-**PATH note, load-bearing.** `/usr/local/bin` is at position 2 in `PATH`, ahead
-of `~/.nix-profile/bin` (5) and `/run/current-system/sw/bin` (17). The dangling
-symlinks there therefore *shadow* Nix packages. Adding `pkgs.kubectl` alone would
-not fix `kubectl`; the dead `/usr/local/bin/kubectl` still wins. Removing those
-symlinks is required for correctness, not cosmetics.
+**PATH note.** `/usr/local/bin` is at position 2 in `PATH`, ahead of
+`~/.nix-profile/bin` (5) and `/run/current-system/sw/bin` (17). An earlier draft
+of this design claimed the dangling symlinks there *shadow* Nix packages. That is
+**false**, and was verified false: PATH lookup requires an executable file, and a
+broken symlink fails that test, so the lookup skips it and continues. A dangling
+`/usr/local/bin/kubectl` does not prevent a later `/run/current-system/sw/bin/kubectl`
+from resolving and running.
+
+The consequences of the correction:
+
+- `kubectl` and the credential helpers are fixed by declaring the packages, not
+  by the purge. There is no ordering dependency between the two.
+- Removing the dangling symlinks is **cleanup, not correctness**. It is still
+  worth doing: they are misleading clutter, and if anything ever recreated
+  `/Applications/Docker.app` they would spring back to life pointing at
+  unlicensed binaries.
+- The one genuinely broken-until-fixed item in `/usr/local/bin` is nothing; the
+  real breakage is `credsStore: "desktop"` in `config.json`, which component 2
+  repairs.
 
 **Images in the old VM are unrecoverable.** Recovering them would require running
 Docker Desktop, which is gone. Everything needed is re-derivable: `forge` pulls
@@ -64,7 +78,7 @@ locally from `docker-compose.faketime.yml`.
 | --- | --- | --- |
 | VM configuration | Nix-managed Colima template | VM shape lives in git and survives a new machine |
 | Autostart | Manual `colima start` | Keeps 8 GB of 24 GB free when not building; fast login |
-| Cleanup scope | Full purge, including root-owned artifacts | Reclaims 21 GB and un-shadows Nix binaries |
+| Cleanup scope | Full purge, including root-owned artifacts | Reclaims 21 GB and removes dead root launch daemons |
 | Collateral fixes | ECR helper, osxkeychain helper, `kubectl` | All three broke with Docker Desktop; same removal, same fix |
 | Host scope | Work host only | `air` is personal, unrestricted, and has never run a container |
 | `docker`/`docker-compose` placement | Unchanged, stays shared | Leaves `air` untouched on a machine not available to test |
@@ -100,8 +114,9 @@ Add `./colima.nix` to the home-manager `imports` list.
 The two credential helper binaries (`docker-credential-osxkeychain`,
 `docker-credential-ecr-login`) must be on `PATH` for the Docker CLI to invoke
 them. As `environment.systemPackages` they land in `/run/current-system/sw/bin`,
-which is on `PATH` — but only once the shadowing `/usr/local/bin` entries are
-gone. Component 3 is therefore a prerequisite for component 2 working.
+which is on `PATH`. Per the PATH note above, the dangling `/usr/local/bin`
+entries of the same name do not interfere, so this component stands alone and
+does not depend on component 3.
 
 ### 2. `colima.nix` and `colima-template.yaml`
 
@@ -196,9 +211,10 @@ Ordered, each step gating the next:
 1. `nix-switch`, then `nix-apply`.
 2. `scripts/purge-docker-desktop.sh`, then confirm `df -h /` reflects roughly
    21 GB reclaimed.
-3. `command -v kubectl` resolves into `/run/current-system/sw/bin`, not
-   `/usr/local/bin`; `kubectl version --client` succeeds. This is the
-   shadowing check.
+3. `command -v kubectl` resolves into `/run/current-system/sw/bin` and
+   `kubectl version --client` succeeds. Expected to pass *before* the purge as
+   well, since dangling links do not shadow; checked here to confirm the
+   package declaration is what fixed it.
 4. `colima start`. Then `colima status` reports running, and
    `docker context ls` shows `colima` as current.
 5. `docker run --rm public.ecr.aws/docker/library/alpine echo ok` — engine and
