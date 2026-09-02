@@ -147,9 +147,16 @@ it is safe on every rebuild. It:
 - sets `credHelpers` to `ecr-login` for `467554678334.dkr.ecr.us-west-2.amazonaws.com`
   and `600461924372.dkr.ecr.us-west-1.amazonaws.com`
 - removes the orphaned Docker Desktop `plugins` and `features` hook blocks
-- leaves `auths` and `currentContext` untouched, since `docker login` owns the
-  former and Colima's `autoActivate` owns the latter
+- leaves `auths` untouched, since `docker login` owns it
+- deletes `currentContext` **only** when it still equals `desktop-linux`,
+  leaving any real value (such as `colima`) alone
 - creates `~/.docker/config.json` if absent
+
+The `currentContext` handling is not cosmetic. Verified: once component 3 deletes
+`~/.docker/contexts`, a `currentContext` of `desktop-linux` makes `docker ps` fail
+with `context not found` — a harder failure than today's clean "cannot connect to
+the daemon". Clearing the stale value lets the CLI fall back to `default` and
+removes any ordering dependency on Colima's `autoActivate` repairing it.
 
 ### 3. `scripts/purge-docker-desktop.sh`
 
