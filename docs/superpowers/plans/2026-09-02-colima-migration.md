@@ -259,7 +259,12 @@ Append `./colima.nix` to the home-manager `imports` list at `flake.nix:470-477`,
 
 - [ ] **Step 9: Run the check to verify it passes**
 
+**Stage the new files first.** Flakes only see git-tracked paths, so an unstaged
+`colima.nix` fails with `path '/nix/store/...-source/colima.nix' does not exist`
+— a confusing error that looks like a module bug but is not:
+
 ```bash
+git add colima.nix colima-template.yaml
 nix eval --raw '.#darwinConfigurations."SRX-US-DWVKDYXQHV".config.home-manager.users."bryan.thode".home.file.".colima/_templates/default.yaml".source'
 ```
 
