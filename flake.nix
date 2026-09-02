@@ -221,10 +221,14 @@
                     with pkgs;
                     [
                       acli
+                      amazon-ecr-credential-helper
                       awscli2
+                      colima
+                      docker-credential-helpers
                       goose
                       jdk25
                       jmeter
+                      kubectl
                       rancher
                       redis
                       teleport
