@@ -221,10 +221,14 @@
                     with pkgs;
                     [
                       acli
+                      amazon-ecr-credential-helper
                       awscli2
+                      colima
+                      docker-credential-helpers
                       goose
                       jdk25
                       jmeter
+                      kubectl
                       rancher
                       redis
                       teleport
@@ -464,7 +468,7 @@
                 home-manager.useGlobalPkgs = true;
                 home-manager.useUserPackages = true;
                 home-manager.backupFileExtension = "backup";
-                home-manager.extraSpecialArgs = { inherit helix-steel vim-hx; };
+                home-manager.extraSpecialArgs = { inherit helix-steel vim-hx isWork; };
 
                 home-manager.users."${username}" = {
                   imports = [
@@ -474,6 +478,7 @@
                     ./helix.nix
                     ./spacemacs.nix
                     ./herdr.nix
+                    ./colima.nix
                   ];
                   # Set the state version for home-manager for backwards compatibility.
                   home.stateVersion = "24.05";
