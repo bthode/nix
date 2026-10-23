@@ -196,6 +196,7 @@
                     jetbrains.idea
                     jless
                     just
+                    lazygit
                     maccy
                     neovim
                     nil
