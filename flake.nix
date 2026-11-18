@@ -675,6 +675,7 @@
                     # Regenerating it brings that segment back; re-apply the edit.
                     settings = lib.recursiveUpdate (lib.importTOML ./starship.toml) {
                       add_newline = false;
+                      username.disabled = true;
                       time.disabled = true;
                       cmd_duration.disabled = true;
                     };
